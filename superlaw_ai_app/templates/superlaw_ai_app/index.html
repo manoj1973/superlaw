@@ -1,0 +1,38 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Legal Document Generator</title>
+</head>
+<body>
+    <h1>Upload Chargesheet PDF</h1>
+    <form method="post" enctype="multipart/form-data" action="{% url 'generate_document' %}">
+        {% csrf_token %}
+        <input type="file" name="pdf_file" required><br><br>
+
+        <label for="action_type">Select Action:</label>
+        <select name="action_type" required>
+            <option value="bail_application">Generate Bail Application</option>
+            <option value="court_petition">Generate Court Petition</option>
+            <option value="bail_approval">Generate Bail Approval Letter</option>
+            <option value="bail_rejection">Generate Bail Rejection Letter</option>
+            <option value="final_judgment">Generate Final Judgment</option>
+            <option value="predict_outcome">Predict Probable Outcome</option>
+            <option value="similar_cases">Find Similar Cases (Indian Kanoon)</option>
+        </select><br><br>
+
+        <label>
+            <input type="checkbox" name="use_openai">
+            Use OpenAI instead of Together AI
+        </label><br><br>
+
+        <button type="submit">Generate</button>
+    </form>
+
+    {% if generated_file %}
+        <h2>Download Result</h2>
+        <a href="/{{ generated_file }}" target="_blank">Download PDF</a>
+    {% endif %}
+</body>
+</html>
